@@ -12,7 +12,16 @@ const ProductSchema = new mongoose.Schema({
     image:{
         type: String,
         required: true
-    }
+    },
+    reviews: [
+        {
+            type:String,
+            author: {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            }
+        }
+    ]
 }, { timestamps: true });
 
 export const Product = mongoose.model("Product", ProductSchema);

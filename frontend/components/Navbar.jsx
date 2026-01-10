@@ -10,7 +10,7 @@ const Navbar = () => {
             <div className="flex gap-3">
                 <Link href="/wishlist"><Heart size={32} /></Link>
                 <Link href="/cart"><ShoppingCart size={32} /></Link>
-                <Link href="/login"> <CircleUser size={32} /></Link>
+                <Link href="/profile"> <CircleUser size={32} /></Link>
             </div>
         </nav>
     );

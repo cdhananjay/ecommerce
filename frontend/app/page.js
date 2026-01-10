@@ -6,17 +6,6 @@ export default async function Home() {
     const req = await axios.get("http://localhost:3000/api/products");
     const products = req.data;
 
-    try{
-
-        const resources = performance.getEntriesByType("resource");
-
-        resources.forEach(r => {
-            if (r.transferSize === 0) {
-                console.log("Cached:", r.name);
-            }
-        });
-    } catch(e) {console.log(e);};
-
     return (
       <>
           <div className="bg-white">

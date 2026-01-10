@@ -1,3 +1,4 @@
+'use client'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,10 +16,32 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import {useState} from "react";
+import axios from "axios";
+import {redirect} from "next/navigation";
 export function LoginForm({
   className,
   ...props
 }) {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const submitForm = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.post("/api/user/login", {
+        email: email,
+        password: password,
+      })
+      console.log(response.data)
+    }
+    catch (error) {
+      console.log("error logging in", error)
+    }
+    finally {
+      redirect('/profile')
+    }
+  }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -33,24 +56,24 @@ export function LoginForm({
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input id="email" type="email" placeholder="m@example.com" required />
+                <Input onChange={(e) => setEmail(e.target.value)} id="email" type="email" placeholder="m@example.com" required />
               </Field>
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
-                    Forgot your password?
-                  </a>
+                  {/*<a*/}
+                  {/*  href="#"*/}
+                  {/*  className="ml-auto inline-block text-sm underline-offset-4 hover:underline">*/}
+                  {/*  Forgot your password?*/}
+                  {/*</a>*/}
                 </div>
-                <Input id="password" type="password" required />
+                <Input onChange={(e) => setPassword(e.target.value)} id="password" type="password" required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
-                  Login with Google
-                </Button>
+                <Button onClick={(e) => submitForm(e) } type="submit">Login</Button>
+                {/*<Button variant="outline" type="button">*/}
+                {/*  Login with Google*/}
+                {/*</Button>*/}
                 <FieldDescription className="text-center">
                   Don't have an account? <Link href="/signup">Sign up</Link>
                 </FieldDescription>

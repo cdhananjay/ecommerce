@@ -1,7 +1,19 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {Schema, Types} from "mongoose";
 import bcrypt from "bcrypt";
 
-const UserSchema = new mongoose.Schema({
+export interface IUser {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    address?: string;
+    wishlist?: Types.ObjectId[];
+    cart?: Types.ObjectId[];
+    orderHistory?: Types.ObjectId[];
+    isPasswordValid: (password: string) => {}
+}
+
+const UserSchema = new mongoose.Schema<IUser>({
     name:{
         type:String,
         required:true
@@ -45,13 +57,13 @@ const UserSchema = new mongoose.Schema({
     ]
 }, { timestamps: true });
 
-UserSchema.pre("save", async function () {
+UserSchema.pre("save", async function (): Promise<void> {
     if (!this.isModified("password")) return;
     this.password = await bcrypt.hash(this.password, 10);
 })
 
-UserSchema.methods.isPasswordValid = async function (password) {
-    return bcrypt.compare(password, this.password);
+UserSchema.methods.isPasswordValid = async function (password: string) : Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
 }
 
-export const User = mongoose.model("User", UserSchema);
+export const User = mongoose.model<IUser>("User", UserSchema);

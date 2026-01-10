@@ -1,4 +1,4 @@
-import express from "express";
+import * as express from "express";
 import {addProduct, getAllProducts} from "../controllers/products.controllers.js";
 const productsRouter = express.Router();
 

@@ -29,17 +29,21 @@ export function LoginForm({
   const submitForm = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post("/api/user/login", {
-        email: email,
-        password: password,
-      })
-      console.log(response.data)
+      const {data} = await axios.post("http://localhost:3000/api/user/login",
+          {
+          email: email,
+          password: password,
+        },
+          {
+            withCredentials: true,
+          }
+      )
+      alert(data.message)
+      // if (data.success) redirect("/profile");
+      // else redirect("/login");
     }
     catch (error) {
       console.log("error logging in", error)
-    }
-    finally {
-      redirect('/profile')
     }
   }
   return (

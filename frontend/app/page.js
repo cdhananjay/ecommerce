@@ -3,8 +3,8 @@
 import ProductCard from "@/components/ProductCard";
 import axios from "axios";
 export default async function Home() {
-    const req = await axios.get("http://localhost:3000/api/products");
-    const products = req.data;
+    const {data} = await axios.get("http://localhost:3000/api/products");
+    const products = data.products;
 
     return (
       <>
